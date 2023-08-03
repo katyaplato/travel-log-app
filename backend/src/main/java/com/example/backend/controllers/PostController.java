@@ -44,14 +44,17 @@ public class PostController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         } Post postToDelete = optionalPost.get();
         postRepository.delete(postToDelete);
+    }
 
+    @GetMapping("/{location}")
+    public Iterable<Post> getPostsByLocation (@PathVariable("location") String location){
+        return null;
     }
 }
 
 
 //	Post Endpoints:
 //        •	PUT /api/posts/{postId}: Update a post by post ID.
-//        •	DELETE /api/posts/{postId}: Delete a post by post ID.
 //        •	GET /api/posts: Get all posts (maybe with optional filters like location or tags).
 //        •	GET /api/posts/{postId}/images: Get all images associated with a post.
 //        •	POST /api/posts/{postId}/images: Upload an image for a post.
