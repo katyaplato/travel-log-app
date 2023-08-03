@@ -6,12 +6,15 @@ import com.example.backend.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
-@RequestMapping("post")
+import java.util.Optional;
+
+@RequestMapping("/posts")
 @RestController
 public class PostController {
-    private final PostRepository postRepository;
-    private final PostService postService;
+    private PostRepository postRepository;
+    private PostService postService;
 
     @Autowired
     public PostController (PostRepository postRepository, PostService postService){
@@ -25,11 +28,19 @@ public class PostController {
      postService.validateNewPost(post);
      postRepository.save(post);
     }
+
+    @GetMapping("/{id}")
+    public Post getPost (@PathVariable Long id){
+    Optional <Post> post = postRepository.findById(id);
+    if(post.isEmpty()){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    } return post.get();
+    }
 }
 
 
 //	Post Endpoints:
-//        •	POST /api/posts: Create a new post.
+//
 //        •	GET /api/posts/{postId}: Get post details by post ID.
 //        •	PUT /api/posts/{postId}: Update a post by post ID.
 //        •	DELETE /api/posts/{postId}: Delete a post by post ID.
