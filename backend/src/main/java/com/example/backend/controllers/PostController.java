@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 
 import com.example.backend.models.Post;
 import com.example.backend.repositories.PostRepository;
+import com.example.backend.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,16 +11,19 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class PostController {
     private final PostRepository postRepository;
+    private final PostService postService;
 
     @Autowired
-    public PostController (PostRepository postRepository){
+    public PostController (PostRepository postRepository, PostService postService){
         this.postRepository = postRepository;
+        this.postService = postService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Post createPost (@RequestBody Post post) {
-     return null;
+    public void createPost (@RequestBody Post post) {
+     postService.validateNewPost(post);
+     postRepository.save(post);
     }
 }
 
