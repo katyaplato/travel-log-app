@@ -1,10 +1,7 @@
 package com.example.backend.models;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -22,6 +19,7 @@ public class Post {
     private Long id;
     private String title;
     private String description;
+    @NonNull
     private String location;
     private LocalDate creationDate;
     @ElementCollection
