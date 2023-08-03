@@ -48,7 +48,9 @@ public class PostController {
 
     @GetMapping("/{location}")
     public Iterable<Post> getPostsByLocation (@PathVariable("location") String location){
-        return null;
+        if(location.isEmpty()){
+            return (Iterable<Post>) new Error("Please, enter a location");
+        } return postRepository.findByLocation(location);
     }
 }
 
