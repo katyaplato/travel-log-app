@@ -57,6 +57,5 @@ public class PostController {
 
 //	Post Endpoints:
 //        •	PUT /api/posts/{postId}: Update a post by post ID.
-//        •	GET /api/posts: Get all posts (maybe with optional filters like location or tags).
 //        •	GET /api/posts/{postId}/images: Get all images associated with a post.
 //        •	POST /api/posts/{postId}/images: Upload an image for a post.
