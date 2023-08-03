@@ -36,12 +36,20 @@ public class PostController {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     } return post.get();
     }
+
+    @DeleteMapping("/{id}")
+    public void deletePost(@PathVariable ("id") Long id){
+        Optional<Post> optionalPost = this.postRepository.findById(id);
+        if(optionalPost.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } Post postToDelete = optionalPost.get();
+        postRepository.delete(postToDelete);
+
+    }
 }
 
 
 //	Post Endpoints:
-//
-//        •	GET /api/posts/{postId}: Get post details by post ID.
 //        •	PUT /api/posts/{postId}: Update a post by post ID.
 //        •	DELETE /api/posts/{postId}: Delete a post by post ID.
 //        •	GET /api/posts: Get all posts (maybe with optional filters like location or tags).
