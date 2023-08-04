@@ -2,6 +2,7 @@ package com.example.backend.controllers;
 
 import com.example.backend.dtos.UserRegistrationDTO;
 import com.example.backend.models.Post;
+import com.example.backend.models.Subscription;
 import com.example.backend.models.User;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.UserRepository;
@@ -52,17 +53,25 @@ public class UserController {
 //
 //        return ResponseEntity.ok(updatedUser);
 //    }
-    @GetMapping("/{userId}/posts")
+    @GetMapping("/{id}/posts")
     public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable Long id) {
                 List<Post> posts = userService.getAllPosts(id);
 
         return ResponseEntity.ok(posts);
     }
+
+    @GetMapping("/{id}/subscriptions")
+    public ResponseEntity<List<Subscription>> getAllSubscriptions(@PathVariable Long id) {
+        List<Subscription> subscriptions = userService.getAllSubscriptions(id);
+
+        return ResponseEntity.ok(subscriptions);
+    }
+
 }
 //•	POST /api/login: User login.
 //  GET /api/users/{userId}: Get user details by user ID.
 //  PUT /api/users/{userId}: Update user profile by user ID.
-//  GET /api/users/{userId}/subscriptions: Get all subscriptions of a specific user.
+
 //•	GET /api/users/{userId}/subscribers: Get all subscribers of a specific user.
 
 
