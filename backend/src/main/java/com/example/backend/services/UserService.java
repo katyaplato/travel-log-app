@@ -1,5 +1,6 @@
 package com.example.backend.services;
 
+import com.example.backend.dtos.UserGetInfoDTO;
 import com.example.backend.dtos.UserRegistrationDTO;
 import com.example.backend.models.Post;
 import com.example.backend.models.Subscription;
@@ -7,6 +8,7 @@ import com.example.backend.models.User;
 import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -51,5 +53,12 @@ public class UserService {
         return optionalUser.get().getSubscriptions();
     }
 
+    public UserGetInfoDTO getUserInfo(Long id){
+        Optional<User> optionalUser = this.userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new Error("User does not exist");
+        }
+        return new UserGetInfoDTO(optionalUser.get());
+    }
 
 }
