@@ -17,54 +17,55 @@ public class PostController {
     private PostService postService;
 
     @Autowired
-    public PostController (PostRepository postRepository, PostService postService){
+    public PostController(PostRepository postRepository, PostService postService) {
         this.postRepository = postRepository;
         this.postService = postService;
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void createPost (@RequestBody Post post) {
+    public void createPost(@RequestBody Post post) {
         postService.validateNewPost(post);
         postRepository.save(post);
     }
 
     @GetMapping("/{id}")
-    public Post getPost (@PathVariable Long id){
-        Optional <Post> post = postRepository.findById(id);
-        if(post.isEmpty()){
+    public Post getPost(@PathVariable Long id) {
+        Optional<Post> post = postRepository.findById(id);
+        if (post.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        } return post.get();
+        }
+        return post.get();
     }
 
     @DeleteMapping("/{id}")
-    public void deletePost(@PathVariable ("id") Long id){
+    public void deletePost(@PathVariable("id") Long id) {
         Optional<Post> optionalPost = this.postRepository.findById(id);
-        if(optionalPost.isEmpty()){
+        if (optionalPost.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-        } Post postToDelete = optionalPost.get();
+        }
+        Post postToDelete = optionalPost.get();
         postRepository.delete(postToDelete);
     }
 
     @GetMapping("/{location}")
-    public Iterable<Post> getPostsByLocation (@PathVariable("location") String location){
-        if(location.isEmpty()){
+    public Iterable<Post> getPostsByLocation(@PathVariable("location") String location) {
+        if (location.isEmpty()) {
             throw new Error("Please, enter a location");
-        } return postRepository.findByLocation(location);
+        }
+        return postRepository.findByLocation(location);
     }
 
     @PutMapping("/{id}")
-    public Post updatePostDescription(@PathVariable Long id, String newDescription){
-        if(newDescription.isEmpty()){
-            throw new Error("Please, enter a description."){
-            };
-            return postService.updateDescription(id, newDescription);
+    public Post updatePostDescription(@PathVariable Long id, String newDescription) {
+        if (newDescription.isEmpty()) {
+            throw new Error("Please, enter a description.");
         }
+        return postService.updateDescription(id, newDescription);
     }
 }
 
 
-//	Post Endpoints:
-//        •	PUT /api/posts/{postId}: Update a post by post ID.
+
 //        •	GET /api/posts/{postId}/images: Get all images associated with a post.
 //        •	POST /api/posts/{postId}/images: Upload an image for a post.
