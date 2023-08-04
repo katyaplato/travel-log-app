@@ -67,6 +67,8 @@ public class UserController {
         return ResponseEntity.ok(subscriptions);
     }
 
+    @GetMapping("/{id}")
+    public
 }
 //•	POST /api/login: User login.
 //  GET /api/users/{userId}: Get user details by user ID.
