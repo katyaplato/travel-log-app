@@ -9,21 +9,22 @@ import org.springframework.stereotype.Service;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+
     @Autowired
     public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
+
     public User registerUser(UserRegistrationDTO userRegistrationDTO) {
 
-        User newUser = new User();
-        newUser.setUsername(userRegistrationDTO.getUsername());
-        newUser.setEmail(userRegistrationDTO.getEmail());
-        newUser.setPassword(userRegistrationDTO.getPassword());
-        newUser.setBio(userRegistrationDTO.getBio());
-        newUser.setFullName(userRegistrationDTO.getFullName());
-        newUser.setProfilePicture(userRegistrationDTO.getProfilePicture());
-
-        // Save the user to the database using the UserRepository or your preferred data access mechanism.
+        User newUser = new User(
+                userRegistrationDTO.getUsername(),
+                userRegistrationDTO.getEmail(),
+                userRegistrationDTO.getPassword(),
+                userRegistrationDTO.getFullName(),
+                userRegistrationDTO.getProfilePicture(),
+                userRegistrationDTO.getBio()
+        );
 
         return newUser;
     }
