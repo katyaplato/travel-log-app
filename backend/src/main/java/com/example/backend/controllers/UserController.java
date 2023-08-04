@@ -69,7 +69,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserGetInfoDTO getinfo(@PathVariable Long id){
+    public UserGetInfoDTO getUserInfo(@PathVariable Long id){
         return this.userService.getUserInfo(id);
     }
 }

@@ -49,8 +49,17 @@ public class PostController {
     @GetMapping("/{location}")
     public Iterable<Post> getPostsByLocation (@PathVariable("location") String location){
         if(location.isEmpty()){
-            return (Iterable<Post>) new Error("Please, enter a location");
+            throw new Error("Please, enter a location");
         } return postRepository.findByLocation(location);
+    }
+
+    @PutMapping("/{id}")
+    public Post updatePostDescription(@PathVariable Long id, String newDescription){
+        if(newDescription.isEmpty()){
+            throw new Error("Please, enter a description."){
+            };
+            return postService.updateDescription(id);
+        }
     }
 }
 
