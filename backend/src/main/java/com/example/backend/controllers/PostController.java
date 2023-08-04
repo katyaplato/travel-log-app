@@ -1,8 +1,11 @@
 package com.example.backend.controllers;
 
 import com.example.backend.models.Post;
+import com.example.backend.models.User;
 import com.example.backend.repositories.PostRepository;
+import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.PostService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,20 +16,33 @@ import java.util.Optional;
 @RequestMapping("/posts")
 @RestController
 public class PostController {
-    private PostRepository postRepository;
-    private PostService postService;
+    private final PostRepository postRepository;
+    private final PostService postService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public PostController(PostRepository postRepository, PostService postService) {
+    public PostController(PostRepository postRepository, PostService postService, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.postService = postService;
+        this.userRepository = userRepository;
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public void createPost(@RequestBody Post post) {
         postService.validateNewPost(post);
-        postRepository.save(post);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUsername = authentication.getName();
+
+        User user = userRepository.findByUsername(loggedInUsername);
+
+        if (user != null) {
+            post.setUser(user);
+            user.getPosts().add(post);
+            postRepository.save(post);
+        } else {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found or not authenticated.");
+        }
     }
 
     @GetMapping("/{id}")

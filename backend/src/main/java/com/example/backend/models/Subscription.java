@@ -1,6 +1,7 @@
 package com.example.backend.models;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -9,8 +10,7 @@ import java.time.LocalDate;
 
 @Entity
 @Setter
-@Getter
-@RequiredArgsConstructor
+@Data
 @Table(name="SUBSCRIPTIONS")
 public class Subscription {
     @Id
