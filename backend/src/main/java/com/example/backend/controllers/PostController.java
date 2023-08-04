@@ -58,7 +58,7 @@ public class PostController {
         if(newDescription.isEmpty()){
             throw new Error("Please, enter a description."){
             };
-            return postService.updateDescription(id);
+            return postService.updateDescription(id, newDescription);
         }
     }
 }
