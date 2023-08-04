@@ -62,7 +62,6 @@ public class UserController {
 //•	POST /api/login: User login.
 //  GET /api/users/{userId}: Get user details by user ID.
 //  PUT /api/users/{userId}: Update user profile by user ID.
-//  GET /api/users/{userId}/posts: Get all posts created by a specific user.
 //  GET /api/users/{userId}/subscriptions: Get all subscriptions of a specific user.
 //•	GET /api/users/{userId}/subscribers: Get all subscribers of a specific user.
 

@@ -2,6 +2,7 @@ package com.example.backend.services;
 
 import com.example.backend.dtos.UserRegistrationDTO;
 import com.example.backend.models.Post;
+import com.example.backend.models.Subscription;
 import com.example.backend.models.User;
 import com.example.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +34,21 @@ public class UserService {
 
         return newUser;
     }
-    public List<Post> getAllPosts(Long id){
+
+    public List<Post> getAllPosts(Long id) {
         Optional<User> optionalUser = this.userRepository.findById(id);
-        if(optionalUser.isEmpty()){
+        if (optionalUser.isEmpty()) {
             throw new Error("User does not exist");
         }
         return optionalUser.get().getPosts();
+    }
+
+    public List<Subscription> getAllSubscriptions(Long id) {
+        Optional<User> optionalUser = this.userRepository.findById(id);
+        if (optionalUser.isEmpty()) {
+            throw new Error("User does not exist");
+        }
+        return optionalUser.get().getSubscriptions();
     }
 
 
