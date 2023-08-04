@@ -1,5 +1,6 @@
 package com.example.backend.controllers;
 
+import com.example.backend.dtos.UserGetInfoDTO;
 import com.example.backend.dtos.UserRegistrationDTO;
 import com.example.backend.models.Post;
 import com.example.backend.models.Subscription;
@@ -68,13 +69,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public
+    public UserGetInfoDTO getinfo(@PathVariable Long id){
+        return this.userService.getUserInfo(id);
+    }
 }
 //•	POST /api/login: User login.
-//  GET /api/users/{userId}: Get user details by user ID.
 //  PUT /api/users/{userId}: Update user profile by user ID.
 
-//•	GET /api/users/{userId}/subscribers: Get all subscribers of a specific user.
 
 
 
