@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @Setter
 @Data
-@RequiredArgsConstructor
 @Table(name="POSTS")
 public class Post {
     @Id
@@ -18,7 +17,6 @@ public class Post {
     private Long id;
     private String title;
     private String description;
-    @NonNull
     private String location;
     private LocalDate creationDate;
     @ElementCollection

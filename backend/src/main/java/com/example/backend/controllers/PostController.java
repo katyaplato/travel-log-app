@@ -25,16 +25,16 @@ public class PostController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createPost (@RequestBody Post post) {
-     postService.validateNewPost(post);
-     postRepository.save(post);
+        postService.validateNewPost(post);
+        postRepository.save(post);
     }
 
     @GetMapping("/{id}")
     public Post getPost (@PathVariable Long id){
-    Optional <Post> post = postRepository.findById(id);
-    if(post.isEmpty()){
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    } return post.get();
+        Optional <Post> post = postRepository.findById(id);
+        if(post.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        } return post.get();
     }
 
     @DeleteMapping("/{id}")
