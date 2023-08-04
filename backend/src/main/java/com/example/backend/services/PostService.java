@@ -9,6 +9,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostService {
@@ -25,4 +26,13 @@ public class PostService {
         }
     }
 
+    public Post updateDescription(Long id, String description){
+        Optional<Post> optionalPost = postRepository.findById(id);
+        if (optionalPost.isEmpty()){
+            throw new Error ("Post does not exist.");
+        }
+        Post postToUpdate = optionalPost.get();
+        postToUpdate.setDescription(description);
+        return postToUpdate;
+    }
 }
