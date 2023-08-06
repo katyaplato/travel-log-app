@@ -6,10 +6,11 @@ import com.example.backend.repositories.SubscriptionRepository;
 import com.example.backend.repositories.UserRepository;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
-@Data
+@Service
 public class SubscriptionService {
     private final UserRepository userRepository;
     private final SubscriptionRepository subscriptionRepository;
