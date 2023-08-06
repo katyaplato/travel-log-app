@@ -1,5 +1,6 @@
 package com.example.backend.security;
 
+import com.example.backend.services.JWTService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -7,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,6 +25,7 @@ import java.util.Date;
 public class JWTAuthFilter extends OncePerRequestFilter {
 
     private final JWTService jwtService;
+
     private final UserDetailsService userDetailsService;
 
     @Override
