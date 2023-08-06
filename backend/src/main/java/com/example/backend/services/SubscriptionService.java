@@ -22,7 +22,7 @@ public class SubscriptionService {
     }
 
     public Subscription subscribeUser(String loggedInUsername, Long userIdToSubscribe) {
-        User subscriber = userRepository.findUserByUsername(loggedInUsername);
+        User subscriber = userRepository.findByUsername(loggedInUsername);
         User userToSubscribe = userRepository.findById(userIdToSubscribe).orElse(null);
 
         if (subscriber == null || userToSubscribe == null || subscriber.getId().equals(userIdToSubscribe)) {

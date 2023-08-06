@@ -35,7 +35,7 @@ public class PostController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUsername = authentication.getName();
 
-        User user = userRepository.findUserByUsername(loggedInUsername);
+        User user = userRepository.findByUsername(loggedInUsername);
 
         if (user != null) {
             post.setUser(user);
