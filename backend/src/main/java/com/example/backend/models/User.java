@@ -5,6 +5,7 @@ import lombok.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -21,6 +22,10 @@ public class User {
     private String profilePicture;
     private String bio;
     private LocalDate creationDate;
+    @Transient
+    private String passwordConfirm;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
     @OneToMany(mappedBy = "subscriber", cascade = CascadeType.ALL)
     private List<Subscription> subscriptions = new ArrayList<>();
 
