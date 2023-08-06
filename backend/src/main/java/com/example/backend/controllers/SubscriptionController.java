@@ -3,10 +3,11 @@ package com.example.backend.controllers;
 import com.example.backend.models.Subscription;
 import com.example.backend.repositories.SubscriptionRepository;
 import com.example.backend.services.SubscriptionService;
-import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,10 +17,11 @@ public class SubscriptionController {
     private final SubscriptionService subscriptionService;
 
     @Autowired
-    public SubscriptionController (SubscriptionRepository subscriptionRepository, SubscriptionService subscriptionService){
+    public SubscriptionController(SubscriptionRepository subscriptionRepository, SubscriptionService subscriptionService) {
         this.subscriptionRepository = subscriptionRepository;
         this.subscriptionService = subscriptionService;
     }
+
     @PostMapping("/subscribe/{userIdToSubscribe}")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Subscription> subscribeToUser(@PathVariable Long userIdToSubscribe) {
@@ -33,4 +35,5 @@ public class SubscriptionController {
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
+    }
 }
