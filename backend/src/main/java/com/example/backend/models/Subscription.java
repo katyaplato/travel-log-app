@@ -9,7 +9,6 @@ import lombok.Setter;
 import java.time.LocalDate;
 
 @Entity
-@Setter
 @Data
 @Table(name="SUBSCRIPTIONS")
 public class Subscription {
