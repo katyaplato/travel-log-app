@@ -12,7 +12,6 @@ import com.example.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -35,41 +34,30 @@ public class UserController {
         this.postService = postService;
     }
 
-    @GetMapping("/registration")
-    public String registration(Model model) {
-        model.addAttribute("userForm", new User());
 
-        return "registration";
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody @Validated UserRegistrationDTO userRegistrationDTO, BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.badRequest().body("Invalid registration data.");
+        }
+
+        // Check if the email is already taken
+        if (userService.isEmailTaken(userRegistrationDTO.getEmail())) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already taken.");
+        }
+
+        // Register the user
+        // Register the user
+        User registeredUser = userService.registerUser(userRegistrationDTO);
+
+        if (registeredUser != null) {
+            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User registration failed.");
+        }
     }
 
-    @PostMapping("/registration")
-    public String addUser(@ModelAttribute("userForm") @Validated User userForm, BindingResult bindingResult, Model model) {
 
-        if (bindingResult.hasErrors()) {
-            return "registration";
-        }
-        if (!userForm.getPassword().equals(userForm.getPasswordConfirm())){
-            model.addAttribute("passwordError", "Пароли не совпадают");
-            return "registration";
-        }
-        if (!userService.saveUser(userForm)){
-            model.addAttribute("usernameError", "Пользователь с таким именем уже существует");
-            return "registration";
-        }
-
-        return "redirect:/";
-    }
-//    @PutMapping("/{userId}")
-//    public ResponseEntity<User> updateUserProfile(@PathVariable Long userId, @RequestBody UserUpdateDTO userUpdateDTO) {
-//        User existingUser = userRepository.findById(userId).orElse(null);
-//        if (existingUser == null) {
-//            return ResponseEntity.notFound().build();
-//        }
-//
-//        User updatedUser = userService.updateUserProfile(existingUser, userUpdateDTO);
-//
-//        return ResponseEntity.ok(updatedUser);
-//    }
     @GetMapping("/{id}/posts")
     public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable Long id) {
                 List<Post> posts = userService.getAllPosts(id);

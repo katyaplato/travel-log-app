@@ -4,6 +4,7 @@ import com.example.backend.models.User;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Data
 public class UserGetInfoDTO {

@@ -35,15 +35,15 @@ public class PostController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUsername = authentication.getName();
 
-        User user = userRepository.findByUsername(loggedInUsername);
-
-        if (user != null) {
-            post.setUser(user);
-            user.getPosts().add(post);
-            postRepository.save(post);
-        } else {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "User not found or not authenticated.");
+        Optional<User> optionalUser = userRepository.findByUsername(loggedInUsername);
+        if (optionalUser.isEmpty()) {
+            throw new Error("User not found or not authenticated.");
         }
+        User user = new User(optionalUser.get());
+
+        post.setUser(user);
+        user.getPosts().add(post);
+        postRepository.save(post);
     }
 
     @GetMapping("/{id}")
@@ -81,7 +81,6 @@ public class PostController {
         return postService.updateDescription(id, newDescription);
     }
 }
-
 
 
 //        •	GET /api/posts/{postId}/images: Get all images associated with a post.

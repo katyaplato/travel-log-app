@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class SubscriptionService {
@@ -22,11 +23,20 @@ public class SubscriptionService {
     }
 
     public Subscription subscribeUser(String loggedInUsername, Long userIdToSubscribe) {
-        User subscriber = userRepository.findByUsername(loggedInUsername);
-        User userToSubscribe = userRepository.findById(userIdToSubscribe).orElse(null);
+        Optional<User> optionalUser = userRepository.findByUsername(loggedInUsername);
+        if(optionalUser.isEmpty()){
+            throw new Error("User not found.");
+        }
+        User subscriber = new User(optionalUser.get());
 
-        if (subscriber == null || userToSubscribe == null || subscriber.getId().equals(userIdToSubscribe)) {
-            return null; // Return null if any of the users does not exist or if trying to subscribe to oneself
+        Optional<User> optionalUser2 = userRepository.findById(userIdToSubscribe);
+        if(optionalUser2.isEmpty()){
+            throw new Error("User not found.");
+        }
+        User userToSubscribe = new User(optionalUser2.get());
+
+        if (subscriber.getId().equals(userIdToSubscribe)) {
+            return null; // Return null if trying to subscribe to oneself
         }
 
         Subscription existingSubscription = subscriptionRepository.findBySubscriberAndUserToSubscribe(subscriber, userToSubscribe);

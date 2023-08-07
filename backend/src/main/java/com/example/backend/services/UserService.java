@@ -71,18 +71,9 @@ public class UserService implements UserDetailsService {
         return new UserGetInfoDTO(optionalUser.get());
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
 
-        if (user == null) {
-            throw new UsernameNotFoundException("User not found");
-        }
-
-        return (UserDetails) user;
-    }
     public boolean saveUser(User user) {
-        User userFromDB = userRepository.findByUsername(user.getUsername());
+        Optional<User> userFromDB = userRepository.findByUsername(user.getUsername());
 
         if (userFromDB != null) {
             return false;
@@ -92,5 +83,15 @@ public class UserService implements UserDetailsService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         userRepository.save(user);
         return true;
+    }
+
+    public boolean isEmailTaken(String email) {
+        Optional<User> existingUser = userRepository.findByEmail(email);
+        return existingUser.isPresent();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return null;
     }
 }
