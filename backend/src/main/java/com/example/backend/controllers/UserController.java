@@ -1,19 +1,14 @@
 package com.example.backend.controllers;
 
 import com.example.backend.dtos.UserGetInfoDTO;
-import com.example.backend.dtos.UserRegistrationDTO;
 import com.example.backend.models.Post;
 import com.example.backend.models.Subscription;
-import com.example.backend.models.User;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.PostService;
 import com.example.backend.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -35,28 +30,6 @@ public class UserController {
     }
 
 
-    @PostMapping("/register")
-    public ResponseEntity<String> registerUser(@RequestBody @Validated UserRegistrationDTO userRegistrationDTO, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body("Invalid registration data.");
-        }
-
-        // Check if the email is already taken
-        if (userService.isEmailTaken(userRegistrationDTO.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).body("Email already taken.");
-        }
-
-        // Register the user
-        // Register the user
-        User registeredUser = userService.registerUser(userRegistrationDTO);
-
-        if (registeredUser != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully.");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("User registration failed.");
-        }
-    }
-
 
     @GetMapping("/{id}/posts")
     public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable Long id) {
@@ -77,7 +50,7 @@ public class UserController {
         return this.userService.getUserInfo(id);
     }
 }
-//•	POST /api/login: User login.
+
 //  PUT /api/users/{userId}: Update user profile by user ID.
 
 
