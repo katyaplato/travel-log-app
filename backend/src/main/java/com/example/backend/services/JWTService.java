@@ -2,14 +2,12 @@ package com.example.backend.services;
 
 import io.jsonwebtoken.Claims;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Function;
 
-@Service
 public interface JWTService {
     String extractUserEmailFromAccessToken(String jwtToken);
 

@@ -24,16 +24,16 @@ public class JWTServiceImpl implements JWTService {
         REFRESH_TOKEN
     }
 
-
+   // @Value("${access.token.secret}")
     private String ACCESS_SECRET_KEY;
 
-    @Value("${refresh.token.secret}")
+    //@Value("${refresh.token.secret}")
     private String REFRESH_SECRET_KEY;
 
-    @Value("${access.token.expiration}")
+    //@Value("${access.token.expiration}")
     private long accessJwtExpiration;
 
-    @Value("${refresh.token.expiration}")
+    //@Value("${refresh.token.expiration}")
     private long refreshJwtExpiration;
 
     @Override

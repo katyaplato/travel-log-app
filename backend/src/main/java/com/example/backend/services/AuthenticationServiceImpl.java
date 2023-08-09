@@ -4,11 +4,13 @@ import com.example.backend.dtos.AuthenticationResponse;
 import com.example.backend.dtos.LoginRequest;
 import com.example.backend.dtos.RegisterRequest;
 import com.example.backend.dtos.RegistrationDTO;
+import com.example.backend.models.Role;
 import com.example.backend.models.User;
 import com.example.backend.models.VerificationToken;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.repositories.VerificationTokenRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -16,10 +18,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
+@Service
+@RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final JWTService jwtService;
     private final PasswordEncoder passwordEncoder;
@@ -27,15 +32,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authManager;
     private final EmailService emailService;
     private final VerificationTokenRepository verificationTokenRepository;
-
-    public AuthenticationServiceImpl(JWTService jwtService, PasswordEncoder passwordEncoder, UserRepository userRepo, AuthenticationManager authManager, EmailService emailService, VerificationTokenRepository verificationTokenRepository) {
-        this.jwtService = jwtService;
-        this.passwordEncoder = passwordEncoder;
-        this.userRepo = userRepo;
-        this.authManager = authManager;
-        this.emailService = emailService;
-        this.verificationTokenRepository = verificationTokenRepository;
-    }
 
     @Override
     public RegistrationDTO register(RegisterRequest request) {
@@ -52,7 +48,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
+                //.password(request.getPassword())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .role(Role.USER)
                 .verificationToken(emailService.createVerificationToken())
                 .build();
 
@@ -73,7 +71,9 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         validateRequest(request.getPassword(), request.getEmail());
 
         try {
-            authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+           // String pass = request.getPassword();
+            //String encoded = passwordEncoder.encode(request.getPassword());
+            authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword() /*passwordEncoder.encode(request.getPassword())*/));
         } catch (Exception e) {
             throw new Error("Invalid Username or Password");
         }

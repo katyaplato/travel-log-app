@@ -39,7 +39,7 @@ public class PostController {
         if (optionalUser.isEmpty()) {
             throw new Error("User not found or not authenticated.");
         }
-        User user = new User(optionalUser.get());
+        User user = optionalUser.get();
 
         post.setUser(user);
         user.getPosts().add(post);

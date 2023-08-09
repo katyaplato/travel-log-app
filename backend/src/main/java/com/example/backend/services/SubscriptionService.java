@@ -27,13 +27,13 @@ public class SubscriptionService {
         if(optionalUser.isEmpty()){
             throw new Error("User not found.");
         }
-        User subscriber = new User(optionalUser.get());
+        User subscriber = optionalUser.get();
 
         Optional<User> optionalUser2 = userRepository.findById(userIdToSubscribe);
         if(optionalUser2.isEmpty()){
             throw new Error("User not found.");
         }
-        User userToSubscribe = new User(optionalUser2.get());
+        User userToSubscribe = optionalUser2.get();
 
         if (subscriber.getId().equals(userIdToSubscribe)) {
             return null; // Return null if trying to subscribe to oneself

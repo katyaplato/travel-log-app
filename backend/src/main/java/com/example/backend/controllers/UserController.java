@@ -7,6 +7,7 @@ import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.PostService;
 import com.example.backend.services.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,20 +15,13 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@AllArgsConstructor
 @RequestMapping("/users")
 public class UserController {
     public final UserRepository userRepository;
     public final UserService userService;
     public final PostRepository postRepository;
     public final PostService postService;
-
-    @Autowired
-    public UserController (UserRepository userRepository, UserService userService, PostRepository postRepository, PostService postService){
-        this.userRepository = userRepository;
-        this.userService = userService;
-        this.postRepository = postRepository;
-        this.postService = postService;
-    }
 
 
 

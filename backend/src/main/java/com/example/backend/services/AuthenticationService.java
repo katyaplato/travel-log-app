@@ -8,7 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
-@Service
 public interface AuthenticationService {
      RegistrationDTO register(RegisterRequest request);
 
