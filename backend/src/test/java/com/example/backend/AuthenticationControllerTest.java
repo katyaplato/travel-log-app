@@ -56,7 +56,7 @@ public class AuthenticationControllerTest {
         userRepository.deleteAll();
         doAnswer(invocation -> {
             System.out.println("Sending email to: " + invocation.getArgument(0));
-            return null;  // This is fine for a void method.
+            return null;
         }).when(emailService).send(anyString(), anyString(), anyString());
         when(emailService.createVerificationToken()).thenReturn(new VerificationToken());
     }
