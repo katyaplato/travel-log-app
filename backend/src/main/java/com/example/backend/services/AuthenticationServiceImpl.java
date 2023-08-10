@@ -52,6 +52,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .verificationToken(emailService.createVerificationToken())
+
                 .build();
 
         emailService.send(user.getEmail(), user.getUsername(), user.getVerificationToken().getVerificationToken());
@@ -79,8 +80,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         var user = userRepo.findByEmail(request.getEmail()).orElseThrow();
-        String jwtToken = jwtService.generateAccessToken((UserDetails) user);
-        String refreshToken = jwtService.generateRefreshToken((UserDetails) user);
+        String jwtToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
         user.setRefreshTokenUUID(jwtService.extractTokenIdFromRefreshToken(refreshToken));
         userRepo.save(user);
         return AuthenticationResponse
