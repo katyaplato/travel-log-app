@@ -1,6 +1,7 @@
-package com.example.backend;
+package com.example.backend.controllers;
 
 
+import com.example.backend.BackendApplication;
 import com.example.backend.dtos.AuthenticationResponse;
 import com.example.backend.dtos.LoginRequest;
 import com.example.backend.dtos.RegisterRequest;

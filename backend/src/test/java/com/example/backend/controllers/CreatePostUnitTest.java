@@ -1,8 +1,7 @@
-package com.example.backend;
+package com.example.backend.controllers;
 
 import com.example.backend.models.Post;
 import com.example.backend.models.User;
-import com.example.backend.controllers.PostController;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.PostService;
