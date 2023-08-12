@@ -5,6 +5,7 @@ import com.example.backend.models.User;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.services.PostService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -29,13 +30,14 @@ public class PostController {
     }
 
     @PostMapping("/create")
+    @SecurityRequirement(name = "Bearer Authentication")
     @ResponseStatus(HttpStatus.CREATED)
     public void createPost(@RequestBody Post post) {
         postService.validateNewPost(post);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String loggedInUsername = authentication.getName();
 
-        Optional<User> optionalUser = userRepository.findByUsername(loggedInUsername);
+        Optional<User> optionalUser = userRepository.findByEmail(loggedInUsername);
         if (optionalUser.isEmpty()) {
             throw new Error("User not found or not authenticated.");
         }

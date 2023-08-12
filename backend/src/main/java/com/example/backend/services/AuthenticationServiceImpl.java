@@ -72,8 +72,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         validateRequest(request.getPassword(), request.getEmail());
 
         try {
-           // String pass = request.getPassword();
-            //String encoded = passwordEncoder.encode(request.getPassword());
             authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword() /*passwordEncoder.encode(request.getPassword())*/));
         } catch (Exception e) {
             throw new Error("Invalid Username or Password");
