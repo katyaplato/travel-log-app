@@ -15,30 +15,30 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/users")
-public class UserControllerImpl {
+public class UserControllerImpl implements UserController {
     public final UserRepository userRepository;
     public final UserService userService;
     public final PostRepository postRepository;
     public final PostService postService;
 
 
-
-    @GetMapping("/{id}/posts")
+    @Override
     public ResponseEntity<List<Post>> getAllPostsByUser(@PathVariable Long id) {
                 List<Post> posts = userService.getAllPosts(id);
 
         return ResponseEntity.ok(posts);
     }
 
-    @GetMapping("/{id}/subscriptions")
+
+    @Override
     public ResponseEntity<List<Subscription>> getAllSubscriptions(@PathVariable Long id) {
         List<Subscription> subscriptions = userService.getAllSubscriptions(id);
 
         return ResponseEntity.ok(subscriptions);
     }
 
-    @GetMapping("/{id}")
+
+    @Override
     public UserGetInfoDTO getUserInfo(@PathVariable Long id){
         return this.userService.getUserInfo(id);
     }
