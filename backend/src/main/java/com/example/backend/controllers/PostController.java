@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("api/posts")
+@RequestMapping("/api/posts")
 @Tag(name = "Post controller", description = "API to handle post-related operations")
 public interface PostController {
 
