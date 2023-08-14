@@ -13,7 +13,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -28,15 +27,15 @@ import java.util.Optional;
 public class AuthenticationServiceImpl implements AuthenticationService {
     private final JWTService jwtService;
     private final PasswordEncoder passwordEncoder;
-    private final UserRepository userRepo;
-    private final AuthenticationManager authManager;
+    private final UserRepository userRepository;
+    private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
     private final VerificationTokenRepository verificationTokenRepository;
 
     @Override
     public RegistrationDTO register(RegisterRequest request) {
 
-        Optional<User> optionalUser = userRepo.findByEmail(request.getEmail());
+        Optional<User> optionalUser = userRepository.findByEmail(request.getEmail());
 
         if (optionalUser.isPresent() && optionalUser.get().getEmail().equalsIgnoreCase(request.getEmail())) {
             throw new Error("User already exists.");
@@ -57,7 +56,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
         emailService.send(user.getEmail(), user.getUsername(), user.getVerificationToken().getVerificationToken());
 
-        userRepo.save(user);
+        userRepository.save(user);
 
         return RegistrationDTO
                 .builder()
@@ -72,16 +71,16 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         validateRequest(request.getPassword(), request.getEmail());
 
         try {
-            authManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword() /*passwordEncoder.encode(request.getPassword())*/));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword() /*passwordEncoder.encode(request.getPassword())*/));
         } catch (Exception e) {
             throw new Error("Invalid Username or Password");
         }
 
-        var user = userRepo.findByEmail(request.getEmail()).orElseThrow();
+        var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         String jwtToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
         user.setRefreshTokenUUID(jwtService.extractTokenIdFromRefreshToken(refreshToken));
-        userRepo.save(user);
+        userRepository.save(user);
         return AuthenticationResponse
                 .builder()
                 .accessToken(jwtToken)
@@ -112,7 +111,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String refreshToken = authHeader.substring(7);
         String userEmail = jwtService.extractUserEmailFromRefreshToken(refreshToken);
 
-        User user = userRepo.findByEmail(userEmail).orElseThrow();
+        User user = userRepository.findByEmail(userEmail).orElseThrow();
         if (jwtService.extractTokenIdFromRefreshToken(refreshToken).equals(user.getRefreshTokenUUID())) {
             String newAccessToken = jwtService.generateAccessToken((UserDetails) user);
             return AuthenticationResponse.builder().accessToken(newAccessToken).build();
@@ -140,7 +139,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         }
 
         user.setVerificationToken(null);
-        userRepo.save(user);
+        userRepository.save(user);
         verificationTokenRepository.delete(verificationToken);
     }
 }
