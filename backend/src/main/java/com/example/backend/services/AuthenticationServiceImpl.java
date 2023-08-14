@@ -47,11 +47,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
                 .builder()
                 .username(request.getUsername())
                 .email(request.getEmail())
-                //.password(request.getPassword())
+                .password(request.getPassword())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(Role.USER)
                 .verificationToken(emailService.createVerificationToken())
-
                 .build();
 
         emailService.send(user.getEmail(), user.getUsername(), user.getVerificationToken().getVerificationToken());
@@ -71,7 +70,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         validateRequest(request.getPassword(), request.getEmail());
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(),request.getPassword() /*passwordEncoder.encode(request.getPassword())*/));
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword() /*passwordEncoder.encode(request.getPassword())*/));
         } catch (Exception e) {
             throw new Error("Invalid Username or Password");
         }
