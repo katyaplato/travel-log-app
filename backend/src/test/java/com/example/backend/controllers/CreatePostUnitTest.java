@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
-@SpringBootTest(classes = PostController.class)
+@SpringBootTest(classes = PostControllerImpl.class)
 class CreatePostUnitTest {
 
     @Mock
@@ -40,7 +40,7 @@ class CreatePostUnitTest {
     private Authentication authentication;
 
     @InjectMocks
-    private PostController postController;
+    private PostControllerImpl postControllerImpl;
 
     @BeforeEach
     void setUp() {
@@ -69,7 +69,7 @@ class CreatePostUnitTest {
         when(postRepository.save(post)).thenReturn(post);
 
 
-        postController.createPost(post);
+        postControllerImpl.createPost(post);
 
 
         verify(postService).validateNewPost(post);
