@@ -15,7 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
-@RequestMapping("/posts")
+@RequestMapping("api//posts")
 @RestController
 public class PostController {
     private final PostRepository postRepository;
@@ -84,6 +84,3 @@ public class PostController {
     }
 }
 
-
-//        •	GET /api/posts/{postId}/images: Get all images associated with a post.
-//        •	POST /api/posts/{postId}/images: Upload an image for a post.
