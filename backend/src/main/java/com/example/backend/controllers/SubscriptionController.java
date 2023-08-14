@@ -1,39 +1,26 @@
 package com.example.backend.controllers;
 
 import com.example.backend.models.Subscription;
-import com.example.backend.repositories.SubscriptionRepository;
-import com.example.backend.services.SubscriptionService;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-@RestController
 @RequestMapping("/subscription")
-public class SubscriptionController {
-    private final SubscriptionRepository subscriptionRepository;
-    private final SubscriptionService subscriptionService;
-
-    @Autowired
-    public SubscriptionController(SubscriptionRepository subscriptionRepository, SubscriptionService subscriptionService) {
-        this.subscriptionRepository = subscriptionRepository;
-        this.subscriptionService = subscriptionService;
-    }
+@Tag(name = "Subscription controller", description = "API to handle subscription-related operations")
+public interface SubscriptionController {
 
     @PostMapping("/subscribe/{userIdToSubscribe}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Subscription> subscribeToUser(@PathVariable Long userIdToSubscribe) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String loggedInUsername = authentication.getName();
-
-        Subscription subscription = subscriptionService.subscribeUser(loggedInUsername, userIdToSubscribe);
-
-        if (subscription != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(subscription);
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-        }
-    }
+    @Operation(summary = "Subscribe to a user")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Successfully subscribed to user"),
+            @ApiResponse(responseCode = "400", description = "Subscription unsuccessful")
+    })
+    ResponseEntity<Subscription> subscribeToUser(@PathVariable Long userIdToSubscribe);
 }
