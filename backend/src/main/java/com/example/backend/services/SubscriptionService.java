@@ -21,7 +21,7 @@ public class SubscriptionService {
 
 
     public Subscription subscribeUser(String loggedInUsername, Long userIdToSubscribe) {
-        Optional<User> optionalUser = userRepository.findByUsername(loggedInUsername);
+        Optional<User> optionalUser = userRepository.findByEmail(loggedInUsername);
         if(optionalUser.isEmpty()){
             throw new Error("User not found.");
         }
@@ -34,12 +34,12 @@ public class SubscriptionService {
         User userToSubscribe = optionalUser2.get();
 
         if (subscriber.getId().equals(userIdToSubscribe)) {
-            return null; // Return null if trying to subscribe to oneself
+            return null;
         }
 
         Subscription existingSubscription = subscriptionRepository.findBySubscriberAndUserToSubscribe(subscriber, userToSubscribe);
         if (existingSubscription != null) {
-            return null; // Return null if already subscribed
+            return null;
         }
         Subscription newSubscription = new Subscription();
         newSubscription.setSubscriber(subscriber);

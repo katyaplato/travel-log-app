@@ -12,8 +12,7 @@ import java.util.List;
 public class UploadNotification {
 
     private final EmailService emailService;
-    private final UploadService uploadService; // You need to define your UploadService
-    private final SubscriptionService subscriptionService;
+    private final UploadService uploadService;
     private final UserService userService;
 
 
@@ -31,7 +30,7 @@ public class UploadNotification {
                 String uploadDetails = "New Upload: " + upload.getTitle() + "\nDescription: " + upload.getDescription();
 
 
-                emailService.sendUploadNotificationToSubscribers(subscriberEmail, subscribedUserName, uploadDetails);
+               // emailService.sendEmail(subscriberEmail, subscribedUserName, uploadDetails);
             }
         }
     }

@@ -4,9 +4,8 @@ import com.example.backend.models.User;
 import com.example.backend.models.VerificationToken;
 import com.example.backend.repositories.UserRepository;
 import com.example.backend.repositories.VerificationTokenRepository;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,10 +23,8 @@ public class EmailServiceImpl implements EmailService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final UserRepository userRepository;
 
-
+    @Value("${spring.mail.username}")
     private String username;
-
-    private String link;
 
     @Override
     public void send(String recipient, String nickName, String token) {
@@ -35,6 +32,7 @@ public class EmailServiceImpl implements EmailService {
         mailMessage.setFrom(username);
         mailMessage.setTo(recipient);
         mailMessage.setSubject("Travel App Email Verification");
+        String link = "link";
         mailMessage.setText("Hello " + nickName + "\n" +
                 "Please verify your email by clicking the link below:\n" +
                 link + "/verification/" + token + "\n" +
@@ -78,17 +76,12 @@ public class EmailServiceImpl implements EmailService {
         send(user.getEmail(), user.getUsername(), newToken.getVerificationToken());
     }
 
-    @Override
-    public void sendUploadNotificationToSubscribers(String subscriberEmail, String subscribedUserName, String uploadDetails) {
+    public void sendEmail(String subscriberEmail, String subscribedUserName, String emailSubject, String emailBody) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setFrom(username);
         mailMessage.setTo(subscriberEmail);
-        mailMessage.setSubject("New Upload Notification");
-        mailMessage.setText("Hello,\n\n" +
-                "A new upload has been added by " + subscribedUserName + ":\n\n" +
-                uploadDetails + "\n\n" +
-                "You can view the upload at: " + link + "\n\n" +
-                "Thank you for subscribing!");
+        mailMessage.setSubject(emailSubject);
+        mailMessage.setText(emailBody);
 
         javaMailSender.send(mailMessage);
     }

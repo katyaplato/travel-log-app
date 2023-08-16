@@ -18,8 +18,6 @@ public class UploadServiceImpl implements UploadService{
 
     @Override
     public List<Upload> getNewUploads() {
-        // You need to implement the logic to retrieve new uploads, for example:
-        // Get uploads with uploadDate after a certain point
         LocalDateTime cutoffDateTime = LocalDateTime.now().minusHours(24); // Example: within the last 24 hours
         return uploadRepository.findByUploadDateAfter(cutoffDateTime);
     }

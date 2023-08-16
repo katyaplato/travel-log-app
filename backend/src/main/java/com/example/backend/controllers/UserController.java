@@ -8,9 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,4 +39,12 @@ public interface UserController {
             @ApiResponse(responseCode = "404", description = "User not found")
     })
     UserGetInfoDTO getUserInfo(@PathVariable Long id);
+
+    @PutMapping("/{id}")
+    @Operation(summary = "Update user info by user ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "User info successfully updated by user ID"),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    void updateUserInfo(@PathVariable Long id, @RequestParam String userName, @RequestParam String fullName, @RequestParam String bio);
 }

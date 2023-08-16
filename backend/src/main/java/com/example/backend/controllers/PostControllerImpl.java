@@ -1,9 +1,12 @@
 package com.example.backend.controllers;
 
 import com.example.backend.models.Post;
+import com.example.backend.models.Subscription;
 import com.example.backend.models.User;
 import com.example.backend.repositories.PostRepository;
+import com.example.backend.repositories.SubscriptionRepository;
 import com.example.backend.repositories.UserRepository;
+import com.example.backend.services.EmailService;
 import com.example.backend.services.PostService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
@@ -14,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -23,6 +27,8 @@ public class PostControllerImpl implements PostController {
     private final PostRepository postRepository;
     private final PostService postService;
     private final UserRepository userRepository;
+    private final EmailService emailService;
+    private final SubscriptionRepository subscriptionRepository;
 
     @SecurityRequirement(name = "Bearer Authentication")
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,6 +47,19 @@ public class PostControllerImpl implements PostController {
         post.setUser(user);
         user.getPosts().add(post);
         postRepository.save(post);
+
+        List<Subscription> subscriptionList = subscriptionRepository.findSubscriptionsByUserToSubscribe(user);
+        for (Subscription subscription : subscriptionList) {
+            String subscriberEmail = subscription.getSubscriber().getEmail();
+            String link = "link";
+            String subscriberName = subscription.getSubscriber().getFullName();
+            String emailText = "Hello, " + subscriberName +
+                    "A new upload has been added by " + user.getFullName() + ":\n\n" +
+                    "\n\n" +
+                    "You can view the upload at: " + link + "\n\n" +
+                    "Thank you for subscribing!";
+            emailService.sendEmail(subscriberEmail, "Travel App", user.getFullName() + "'s upload", emailText);
+        }
     }
 
 

@@ -24,7 +24,7 @@ public class SubscriptionControllerImpl implements SubscriptionController {
         Subscription subscription = subscriptionService.subscribeUser(loggedInUsername, userIdToSubscribe);
 
         if (subscription != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(subscription);
+            return ResponseEntity.status(HttpStatus.CREATED).build();
         } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }

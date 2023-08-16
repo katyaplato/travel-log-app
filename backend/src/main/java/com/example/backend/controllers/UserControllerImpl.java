@@ -9,6 +9,8 @@ import com.example.backend.services.PostService;
 import com.example.backend.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,9 +44,16 @@ public class UserControllerImpl implements UserController {
     public UserGetInfoDTO getUserInfo(@PathVariable Long id){
         return this.userService.getUserInfo(id);
     }
+
+    @Override
+    public void updateUserInfo(Long id, String userName, String fullName, String bio) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String loggedInUsername = authentication.getName();
+        userService.updateUserInfo(id, loggedInUsername, userName, fullName, bio);
+    }
 }
 
-//  PUT /api/users/{userId}: Update user profile by user ID.
+
 
 
 

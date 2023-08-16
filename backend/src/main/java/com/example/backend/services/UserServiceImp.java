@@ -9,6 +9,7 @@ import com.example.backend.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.ErrorResponseException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -67,9 +68,26 @@ public class UserServiceImp implements UserService {
     public List<String> getSubscriberEmailsForUser(String subscribedUserName) {
         List<String> subscriberEmails = new ArrayList<>();
 
-        // Find the user based on the subscribed user's nickname
         Optional<User> subscribedUser = userRepository.findByUsername(subscribedUserName);
 
         return subscriberEmails;
+    }
+
+    @Override
+    public void updateUserInfo(Long id, String loggedInUsername, String userName, String fullName, String bio) {
+        Optional<User> optionalUser = userRepository.findById(id);
+        if(optionalUser.isEmpty()){
+            throw new Error("User not found.");
+        }
+        User user = optionalUser.get();
+        if(user.getEmail().equals(loggedInUsername)) {
+            user.setUsername(userName);
+            user.setFullName(fullName);
+            user.setBio(bio);
+            userRepository.save(user);
+
+        } else {
+            throw new Error("Invalid user ID.");
+        }
     }
 }
