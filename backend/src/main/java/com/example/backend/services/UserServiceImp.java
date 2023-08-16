@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,23 +19,6 @@ import java.util.Optional;
 public class UserServiceImp implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
-
-
-    ///public User registerUser(UserRegistrationDTO userRegistrationDTO) {
-
-//        User newUser = new User(
-//                userRegistrationDTO.getUsername(),
-//                userRegistrationDTO.getEmail(),
-//                userRegistrationDTO.getPassword(),
-//                userRegistrationDTO.getFullName(),
-//                userRegistrationDTO.getProfilePicture(),
-//                userRegistrationDTO.getBio(),
-        //        role
-//        );
-
-       // return newUser;
-   // }
 
     public List<Post> getAllPosts(Long id) {
         Optional<User> optionalUser = this.userRepository.findById(id);
@@ -64,7 +48,7 @@ public class UserServiceImp implements UserService {
     public boolean saveUser(User user) {
         Optional<User> userFromDB = userRepository.findByUsername(user.getUsername());
 
-        if (userFromDB != null) {
+        if (userFromDB.isPresent()) {
             return false;
         }
 
@@ -79,8 +63,13 @@ public class UserServiceImp implements UserService {
         return existingUser.isPresent();
     }
 
-//    @Override
-//    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        return null;
-//    }
+    @Override
+    public List<String> getSubscriberEmailsForUser(String subscribedUserName) {
+        List<String> subscriberEmails = new ArrayList<>();
+
+        // Find the user based on the subscribed user's nickname
+        Optional<User> subscribedUser = userRepository.findByUsername(subscribedUserName);
+
+        return subscriberEmails;
+    }
 }

@@ -1,22 +1,20 @@
 package com.example.backend.services;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.backend.models.Upload;
+import lombok.AllArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Component
-public class UploadNotificationTask {
+@AllArgsConstructor
+public class UploadNotification {
 
     private final EmailService emailService;
     private final UploadService uploadService; // You need to define your UploadService
+    private final SubscriptionService subscriptionService;
 
-    @Autowired
-    public UploadNotificationTask(EmailService emailService, UploadService uploadService) {
-        this.emailService = emailService;
-        this.uploadService = uploadService;
-    }
 
     @Scheduled(fixedRate = 60000) // Check for new uploads every minute
     public void sendUploadNotifications() {

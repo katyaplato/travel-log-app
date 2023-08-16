@@ -14,4 +14,6 @@ public interface UserService {
     List<Subscription> getAllSubscriptions(Long id);
 
     UserGetInfoDTO getUserInfo(Long id);
+
+    List<String> getSubscriberEmailsForUser(String subscribedUserName);
 }

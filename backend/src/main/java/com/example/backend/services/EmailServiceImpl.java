@@ -77,4 +77,19 @@ public class EmailServiceImpl implements EmailService {
 
         send(user.getEmail(), user.getUsername(), newToken.getVerificationToken());
     }
+
+    @Override
+    public void sendUploadNotificationToSubscribers(String subscriberEmail, String subscribedUserName, String uploadDetails) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(username);
+        mailMessage.setTo(subscriberEmail);
+        mailMessage.setSubject("New Upload Notification");
+        mailMessage.setText("Hello,\n\n" +
+                "A new upload has been added by " + subscribedUserName + ":\n\n" +
+                uploadDetails + "\n\n" +
+                "You can view the upload at: " + link + "\n\n" +
+                "Thank you for subscribing!");
+
+        javaMailSender.send(mailMessage);
+    }
 }

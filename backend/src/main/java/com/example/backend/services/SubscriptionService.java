@@ -4,23 +4,21 @@ import com.example.backend.models.Subscription;
 import com.example.backend.models.User;
 import com.example.backend.repositories.SubscriptionRepository;
 import com.example.backend.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class SubscriptionService {
     private final UserRepository userRepository;
     private final SubscriptionRepository subscriptionRepository;
 
-    @Autowired
-    public SubscriptionService(UserRepository userRepository, SubscriptionRepository subscriptionRepository) {
-        this.userRepository = userRepository;
-        this.subscriptionRepository = subscriptionRepository;
-    }
 
     public Subscription subscribeUser(String loggedInUsername, Long userIdToSubscribe) {
         Optional<User> optionalUser = userRepository.findByUsername(loggedInUsername);
@@ -50,4 +48,6 @@ public class SubscriptionService {
 
         return subscriptionRepository.save(newSubscription);
     }
+
+
 }
