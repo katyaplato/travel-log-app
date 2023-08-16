@@ -24,10 +24,9 @@ public class EmailServiceImpl implements EmailService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final UserRepository userRepository;
 
-    //@Value("${spring.mail.username}")
+
     private String username;
 
-    //@Value("${frontEnd.url}")
     private String link;
 
     @Override
@@ -41,7 +40,7 @@ public class EmailServiceImpl implements EmailService {
                 link + "/verification/" + token + "\n" +
 
                 "This link will expire in 15 minutes.");
-       // javaMailSender.send(mailMessage);
+        javaMailSender.send(mailMessage);
     }
 
     @Override
