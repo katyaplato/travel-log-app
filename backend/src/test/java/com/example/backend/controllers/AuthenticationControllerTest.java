@@ -85,7 +85,7 @@ public class AuthenticationControllerTest {
         assertEquals(200, response.getStatusCode().value(), response.toString());
         assertEquals(registrationDTO.getEmail(), response.getBody().getEmail());
         assertEquals(registrationDTO.getUsername(), response.getBody().getUsername());
-        assertEquals(2, userRepository.count());
+        assertEquals(3, userRepository.count());
     }
 
     @Test
