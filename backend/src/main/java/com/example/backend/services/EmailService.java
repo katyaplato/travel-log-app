@@ -11,4 +11,6 @@ public interface EmailService {
     VerificationToken createVerificationToken();
 
     void regenerateVerificationToken(String token) throws ChangeSetPersister.NotFoundException;
+
+    void sendUploadNotificationToSubscribers(String subscriberEmail, String subscribedUserName, String uploadDetails);
 }
