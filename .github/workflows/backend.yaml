@@ -26,4 +26,6 @@ jobs:
           arguments: build
           build-root-directory: backend
           gradle-version: 8.1.1
+      - name: Run tests with Gradle
+        run: ./gradlew test --project-dir backend
           
