@@ -5,7 +5,7 @@ import com.example.backend.models.Post;
 import com.example.backend.models.Subscription;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.UserRepository;
-import com.example.backend.services.PostService;
+import com.example.backend.services.PostServiceImpl;
 import com.example.backend.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class UserControllerImpl implements UserController {
     public final UserRepository userRepository;
     public final UserService userService;
     public final PostRepository postRepository;
-    public final PostService postService;
+    public final PostServiceImpl postServiceImpl;
 
 
     @Override

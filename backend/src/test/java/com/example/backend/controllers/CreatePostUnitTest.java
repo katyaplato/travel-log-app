@@ -4,7 +4,7 @@ import com.example.backend.models.Post;
 import com.example.backend.models.User;
 import com.example.backend.repositories.PostRepository;
 import com.example.backend.repositories.UserRepository;
-import com.example.backend.services.PostService;
+import com.example.backend.services.PostServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
 class CreatePostUnitTest {
 
     @Mock
-    private PostService postService;
+    private PostServiceImpl postServiceImpl;
 
     @Mock
     private UserRepository userRepository;
@@ -65,14 +65,14 @@ class CreatePostUnitTest {
 
 
         Post post = new Post();
-        doNothing().when(postService).validateNewPost(post);
+        doNothing().when(postServiceImpl).validateNewPost(post);
         when(postRepository.save(post)).thenReturn(post);
 
 
         postControllerImpl.createPost(post);
 
 
-        verify(postService).validateNewPost(post);
+        verify(postServiceImpl).validateNewPost(post);
         verify(userRepository).findByUsername(userDetails.getUsername());
         verify(postRepository).save(post);
         verify(user).getPosts().add(post);
